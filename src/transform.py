@@ -1,13 +1,11 @@
-# Habitat Picker transform.py place holder
+# Habitat Picker transform.py
 
 """
-Store Habitat_Picker transform code
+Store Habitat_Picker transform code for extracted paid price csv files
 """
 
 import pandas as pd
 import numpy as np
-
-
 
 
 # Normalising ID's (remove {} and capitalise)
@@ -40,7 +38,6 @@ def clean_strings(df: pd.DataFrame) -> pd.DataFrame:
         )
     return df
 
-
 # Flag stndardisation (converting Y:Yes, N:No to boolean Y:True, N:False)
 def standardise_flags(df: pd.DataFrame) -> pd.DataFrame:
     df["new_build_flag"] = df["new_build_flag"].map({"Y": True, "N": False})
@@ -49,7 +46,6 @@ def standardise_flags(df: pd.DataFrame) -> pd.DataFrame:
 # Collection of transform functions
 def transform_ppd(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
-
     df = normalise_ids(df)
     df = normalise_types(df)
     df = clean_strings(df)

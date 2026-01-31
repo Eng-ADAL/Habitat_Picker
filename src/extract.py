@@ -1,7 +1,7 @@
-# Habitat Picker extract.py place holder
+# Habitat Picker extract.py
 
 """
-Store Habitat_Picker extract code for csv file
+Store Habitat_Picker extract code for extracting paid price csv files
 """
 
 import pandas as pd
