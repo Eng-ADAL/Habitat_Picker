@@ -9,7 +9,7 @@ from datetime   import datetime
 
 from extract    import extract_ppd_csv
 from transform  import transform_ppd
-from load       import write_monthly_csv
+from load       import write_monthly_csv, upload_to_s3
 
 from config     import DATA_RAW_DIR, DATA_TRA_DIR
 
@@ -32,6 +32,17 @@ def main(input_path: Path):
 
     print("\nSAMPLE ROWS\n--- --- ---")
     print(df_tra.head())
+
+    bucket = "habitat-picker-s3"
+    s3_key = f"ppd/year={year}/month={month:02d}/{output_path.name}"
+
+    upload_to_s3(
+        local_path=output_path,
+        bucket=bucket,
+        s3_key=s3_key
+    )
+
+    print(f"Uploaded to s3://{bucket}/{s3_key}")
 
 
 if __name__ == "__main__":
