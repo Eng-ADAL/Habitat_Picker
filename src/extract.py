@@ -33,11 +33,15 @@ def extract_ppd_csv(path: Path) -> pd.DataFrame:
         # log
         raise FileNotFoundError(f"PPD source file not found {path}")
 
-    df = pd.read_csv(path, header=None)
+    df = pd.read_csv(path)
+
+    # if file is raw gov data without headers
+    if "price" not in df.columns:
+        df = pd.read_csv(path, header=None, names=PPD_COLUMNS)
 
     if df.shape[1] != len(PPD_COLUMNS):
-        raise ValueError(f"Invalid column count! Expected: {len(PPD_COLUMNS)}, got: {df.shape[1]}")
+        raise ValueError(
+            f"Invalid column count! Expected {len(PPD_COLUMNS)}, got {df.shape[1]}"
+        )
 
-    df.columns = PPD_COLUMNS
     return df
-

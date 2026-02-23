@@ -51,6 +51,10 @@ coverage.xml
 .pytest_cache/
 cover/
 
+# AWS lambda test
+src/test_event.json
+
+
 # Translations
 *.mo
 *.pot
