@@ -9,8 +9,7 @@ from datetime   import datetime
 
 from extract    import extract_ppd_csv
 from transform  import transform_ppd
-from load       import write_monthly_csv, upload_to_s3
-
+from load       import write_parquet_partitioned, upload_to_s3
 from config     import DATA_RAW_DIR, DATA_TRA_DIR
 
 
@@ -22,7 +21,7 @@ def main(input_path: Path):
     month = df_tra["date_of_transfer"].dt.month.iloc[0]
 
 
-    output_path = write_monthly_csv(df_tra, DATA_TRA_DIR, year, month)
+    output_path = write_parquet_partitioned(df_tra, DATA_TRA_DIR, year, month)
 
 
     print(f"\nWritten file: {output_path}")
@@ -34,7 +33,7 @@ def main(input_path: Path):
     print(df_tra.head())
 
     bucket = "habitat-picker-s3"
-    s3_key = f"ppd/year={year}/month={month:02d}/{output_path.name}"
+    s3_key = f"curated/ppd/year={year}/month={month:02d}/data.parquet"
 
     upload_to_s3(
         local_path=output_path,

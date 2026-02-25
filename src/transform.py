@@ -43,6 +43,32 @@ def standardise_flags(df: pd.DataFrame) -> pd.DataFrame:
     df["new_build_flag"] = df["new_build_flag"].map({"Y": True, "N": False})
     return df
 
+# Enforce schema expected
+EXPECTED_SCHEMA = {
+    "transaction_id": "string",
+    "price": "int64",
+    "date_of_transfer": "datetime64[ns]",
+    "postcode": "string",
+    "property_type": "string",
+    "new_build_flag": "boolean",
+    "tenure_type": "string",
+    "paon": "string",
+    "saon": "string",
+    "street": "string",
+    "locality": "string",
+    "town_city": "string",
+    "district": "string",
+    "county": "string",
+    "ppd_category": "string",
+    "record_status": "string",
+}
+
+def enforce_schema(df):
+    for col, dtype in EXPECTED_SCHEMA.items():
+        df[col] = df[col].astype(dtype)
+    return df
+
+
 # Collection of transform functions
 def transform_ppd(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
@@ -50,5 +76,6 @@ def transform_ppd(df: pd.DataFrame) -> pd.DataFrame:
     df = normalise_types(df)
     df = clean_strings(df)
     df = standardise_flags(df)
+    df = enforce_schema(df)
 
     return df
